@@ -1,0 +1,82 @@
+# Personal Portfolio
+
+## About
+
+A responsive personal portfolio for Akash Mahesh, an Information Science and Engineering student at BMS College of Engineering interested in software development, AI, and cloud computing.
+
+## Features
+
+- Responsive single-page layout for desktop, tablet, and mobile
+- Project cards for machine learning, network security, and full-stack development work
+- Experience timeline, skills toolkit, education, and certification sections
+- Smooth scrolling, scroll reveal animations, active navigation, mobile menu, and back-to-top control
+- No build step or JavaScript dependencies
+
+## Technologies
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Nginx and Docker
+
+## Running Locally
+
+Open `index.html` directly in a browser. No Node.js, npm, or other installation is required.
+
+## Running with Docker
+
+From this folder, build and run the Nginx container:
+
+```powershell
+docker build -t akash-portfolio .
+docker run --name akash-portfolio-container -p 8080:80 akash-portfolio
+```
+
+Visit http://localhost:8080 in a browser. Stop and remove the container with:
+
+```powershell
+docker stop akash-portfolio-container
+docker rm akash-portfolio-container
+```
+
+## Project Structure
+
+```text
+Assignment 1 - Portfolio Website/
+|-- index.html
+|-- style.css
+|-- script.js
+|-- Dockerfile
+|-- README.md
+`-- .gitignore
+```
+
+## DevOps
+
+This static website is containerized using Docker and served using Nginx. The Dockerfile copies the site into the Nginx web root, exposes port 80, and allows the site to run consistently without a local Node.js environment.
+
+### Beginner Docker Checklist
+
+1. Check Docker: open PowerShell and run `docker --version`.
+2. If it is not installed, download Docker Desktop for Windows from https://www.docker.com/products/docker-desktop/ and complete the installer. Restart Windows if the installer asks you to.
+3. Open Docker Desktop, wait until it says Docker is running, then verify with `docker run hello-world`.
+4. Build the image from this folder with `docker build -t akash-portfolio .`.
+5. Run it with `docker run --name akash-portfolio-container -p 8080:80 akash-portfolio` and open http://localhost:8080.
+6. Stop and remove it with `docker stop akash-portfolio-container` and `docker rm akash-portfolio-container`.
+
+### Beginner GitHub Checklist
+
+1. Check Git with `git --version`. If it is not installed, download Git for Windows from https://git-scm.com/download/win and install it using the default options.
+2. Create an empty repository on GitHub. Do not add a README or `.gitignore` because this folder already contains them.
+3. In PowerShell, open this folder and run:
+
+```powershell
+git init
+git add .
+git commit -m "Create personal portfolio website"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git push -u origin main
+```
+
+Replace the remote URL with the URL of your own GitHub repository. GitHub may ask you to sign in through a browser. The repository's **Commits** page shows commit messages, authors, and timestamps; the repository's **Insights > Network** view can also show the push history.
