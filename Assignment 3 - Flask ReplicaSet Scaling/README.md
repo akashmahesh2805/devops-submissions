@@ -1,6 +1,7 @@
 # Flask Flash Sale — Kubernetes ReplicaSet
 
 ## Objective
+
 This project demonstrates a simple Flask flash-sale application running inside a Kubernetes ReplicaSet on a single-node Minikube cluster. It highlights:
 
 - Flask application behavior
@@ -24,18 +25,20 @@ This project demonstrates a simple Flask flash-sale application running inside a
 ## Architecture
 
 Minikube
-  └── 1 Node
-      └── ReplicaSet
-          ├── Pod 1
-          ├── Pod 2
-          ├── Pod 3
-          ├── Pod 4
-          └── Pod 5
+└── 1 Node
+└── ReplicaSet
+├── Pod 1
+├── Pod 2
+├── Pod 3
+├── Pod 4
+└── Pod 5
 
 ## Docker
+
 The Flask app is packaged in a Docker image named `flashsale:1.0` and runs on port `5000` using Gunicorn.
 
 ## Kubernetes
+
 The project uses a Kubernetes `ReplicaSet` with:
 
 - initial replicas: 3
@@ -44,6 +47,7 @@ The project uses a Kubernetes `ReplicaSet` with:
 - service: `flashsale-svc`
 
 ## Scaling
+
 The application starts with 3 replicas and can be scaled to 5 with:
 
 ```bash
@@ -51,6 +55,7 @@ kubectl scale rs flashsale-rs --replicas=5
 ```
 
 ## Self-Healing
+
 If one pod is deleted, the ReplicaSet detects the mismatch and creates a replacement pod automatically.
 
 ## Verification Commands
@@ -66,4 +71,5 @@ kubectl describe pod <pod-name>
 ```
 
 ## GitHub
+
 This project is intended for a personal GitHub repository for assignment submission.
