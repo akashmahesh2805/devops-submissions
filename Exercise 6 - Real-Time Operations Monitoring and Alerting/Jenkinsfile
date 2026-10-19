@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build and Validate') {
+            steps {
+                dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
+                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml config -q'
+                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml build'
+                }
+            }
+        }
+        stage('Deploy Monitoring Stack') {
+            steps {
+                dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
+                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml up -d'
+                }
+            }
+        }
+        stage('Verify Metrics') {
+            steps {
+                dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
+                    sh '''docker-compose -p delivery-monitoring -f docker-compose.yaml exec -T delivery-metrics \
+                      python -c "import urllib.request; data=urllib.request.urlopen('http://localhost:8000/metrics').read(); assert b'pending_deliveries' in data"'''
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Monitoring stack deployed and metrics verified.'
+        }
+    }
+}
