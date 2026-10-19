@@ -27,9 +27,16 @@ try:
         )
     print("Read /etc/passwd: denied")
 
-    execute_bash = container.exec_run(["/bin/bash", "-c", "true"])
-    if execute_bash.exit_code == 0:
-        raise RuntimeError("AppArmor unexpectedly allowed /bin/bash to execute")
-    print(f"Execute /bin/bash: denied (exit {execute_bash.exit_code})")
+    try:
+        execute_bash = container.exec_run(["/bin/bash", "-c", "true"])
+    except docker.errors.APIError as error:
+        message = str(error).lower()
+        if "permission denied" not in message and "operation not permitted" not in message:
+            raise
+        print("Execute /bin/bash: denied by AppArmor")
+    else:
+        if execute_bash.exit_code == 0:
+            raise RuntimeError("AppArmor unexpectedly allowed /bin/bash to execute")
+        print(f"Execute /bin/bash: denied (exit {execute_bash.exit_code})")
 finally:
     container.remove(force=True)
