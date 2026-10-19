@@ -42,7 +42,7 @@ docker rm akash-portfolio-container
 ## Project Structure
 
 ```text
-Assignment 1 - Portfolio Website/
+Exercise 0 - Portfolio Website/
 |-- index.html
 |-- style.css
 |-- script.js
