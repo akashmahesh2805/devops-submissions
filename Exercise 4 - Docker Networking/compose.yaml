@@ -1,0 +1,30 @@
+services:
+  flask:
+    build: .
+    container_name: flask
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - my-bridge-net
+
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - my-bridge-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    networks:
+      - my-bridge-net
+
+networks:
+  my-bridge-net:
+    name: my-bridge-net
+    driver: bridge
