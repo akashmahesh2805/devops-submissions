@@ -1,4 +1,4 @@
-# Multi-Node Kubernetes Cluster with Multiple Applications
+# Exercise 10 - Multi-Node Kubernetes Cluster with Multiple Applications and Replicasets
 
 ## Objective
 
@@ -47,7 +47,7 @@ All manifests explicitly use the `default` namespace. This keeps Deployment and 
 ## Project Structure
 
 ```text
-Assignment 2 - Minikube/
+Exercise 10 - Minikube Multi-Node Multi-App Minikube Deployment/
 |-- product_catalog.py
 |-- shopping_cart.py
 |-- Dockerfile.product
