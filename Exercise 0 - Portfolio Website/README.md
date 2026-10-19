@@ -64,19 +64,12 @@ This static website is containerized using Docker and served using Nginx. The Do
 5. Run it with `docker run --name akash-portfolio-container -p 8080:80 akash-portfolio` and open http://localhost:8080.
 6. Stop and remove it with `docker stop akash-portfolio-container` and `docker rm akash-portfolio-container`.
 
-### Beginner GitHub Checklist
+### GitHub
 
-1. Check Git with `git --version`. If it is not installed, download Git for Windows from https://git-scm.com/download/win and install it using the default options.
-2. Create an empty repository on GitHub. Do not add a README or `.gitignore` because this folder already contains them.
-3. In PowerShell, open this folder and run:
+This portfolio is Exercise 0 in the DevOps submissions repository. From the repository root, stage and push it with the other lab work:
 
 ```powershell
-git init
-git add .
-git commit -m "Create personal portfolio website"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-git push -u origin main
+git add -- "Exercise 0 - Portfolio Website"
+git commit -m "Update Exercise 0 portfolio website"
+git push
 ```
-
-Replace the remote URL with the URL of your own GitHub repository. GitHub may ask you to sign in through a browser. The repository's **Commits** page shows commit messages, authors, and timestamps; the repository's **Insights > Network** view can also show the push history.
