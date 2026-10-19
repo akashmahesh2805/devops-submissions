@@ -169,6 +169,8 @@ kubectl get replicasets
 kubectl get pods
 kubectl get pods -o wide
 kubectl get services
+kubectl wait --for=condition=Available deployment/product-catalog --timeout=180s
+kubectl wait --for=condition=Available deployment/shopping-cart --timeout=180s
 ```
 
 Expected Deployment readiness:
@@ -180,6 +182,16 @@ shopping-cart    3/3
 
 `kubectl get pods -o wide` includes the `NODE` column. Product Catalog pods must have different node names. The three Shopping Cart pods should have three different node names. Kubernetes generates the pod names, so do not expect fixed names.
 
+Each Deployment has an HTTP readiness probe for its application route. Verify all replicas are ready and that same-app replicas occupy distinct nodes:
+
+```powershell
+kubectl get pods -o custom-columns=APP:.metadata.labels.app,READY:.status.containerStatuses[0].ready,NODE:.spec.nodeName
+$productNodes = @(kubectl get pods -l app=product-catalog -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | Sort-Object -Unique)
+$cartNodes = @(kubectl get pods -l app=shopping-cart -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | Sort-Object -Unique)
+if ($productNodes.Count -ne 2) { throw "Product Catalog replicas are not spread across two nodes." }
+if ($cartNodes.Count -ne 3) { throw "Shopping Cart replicas are not spread across three nodes." }
+```
+
 ## Access Services
 
 Minikube opens each NodePort service and prints the actual local URL and port:
@@ -190,6 +202,8 @@ minikube -p devops-multinode service shopping-cart-service
 ```
 
 The port will not necessarily match a professor's example. Keep the printed URL, such as `http://127.0.0.1:xxxxx`, for the API tests. The command may open a browser automatically. `minikube service` also works from PowerShell or CMD. In WSL, use the printed address from Minikube and check Docker Desktop networking if localhost forwarding is unavailable.
+
+The Service selectors use the same app labels as their Deployments. The API requests below verify each Service reaches its application.
 
 ## Testing
 
