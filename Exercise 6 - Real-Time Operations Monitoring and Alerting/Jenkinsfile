@@ -5,23 +5,24 @@ pipeline {
         stage('Build and Validate') {
             steps {
                 dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
-                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml config -q'
-                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml build'
+                    sh 'docker compose -p delivery-monitoring -f docker-compose.yaml -f docker-compose.alert-test.yaml config -q'
+                    sh 'docker compose -p delivery-monitoring -f docker-compose.yaml -f docker-compose.alert-test.yaml build'
                 }
             }
         }
         stage('Deploy Monitoring Stack') {
             steps {
                 dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
-                    sh 'docker-compose -p delivery-monitoring -f docker-compose.yaml up -d'
+                    sh 'docker compose -p delivery-monitoring -f docker-compose.yaml -f docker-compose.alert-test.yaml up -d'
                 }
             }
         }
         stage('Verify Metrics') {
             steps {
                 dir('Exercise 6 - Real-Time Operations Monitoring and Alerting') {
-                    sh '''docker-compose -p delivery-monitoring -f docker-compose.yaml exec -T delivery-metrics \
-                      python -c "import urllib.request; data=urllib.request.urlopen('http://localhost:8000/metrics').read(); assert b'pending_deliveries' in data"'''
+                    sh 'sleep 30'
+                    sh '''docker compose -p delivery-monitoring -f docker-compose.yaml -f docker-compose.alert-test.yaml exec -T delivery-metrics \
+                      python -c "import json,urllib.request; metrics=urllib.request.urlopen('http://localhost:8000/metrics').read(); assert b'pending_deliveries' in metrics; alerts=json.load(urllib.request.urlopen('http://prometheus:9090/api/v1/alerts'))['data']['alerts']; firing={a['labels']['alertname'] for a in alerts if a['state']=='firing'}; assert {'HighPendingDeliveries','HighAverageDeliveryTime'} <= firing, firing"'''
                 }
             }
         }

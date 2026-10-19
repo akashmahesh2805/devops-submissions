@@ -1,0 +1,4 @@
+services:
+  delivery-metrics:
+    environment:
+      SIMULATE_ALERTS: "true"
